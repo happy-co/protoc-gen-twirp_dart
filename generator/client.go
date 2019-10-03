@@ -98,7 +98,7 @@ class {{.Name}} {
 		{{- else if and (.IsMessage) (eq .Type "DateTime")}}
 		map['{{.JSONName}}'] = {{.Name}}.toIso8601String();
 		{{- else if .IsMessage}}
-		map['{{.JSONName}}'] = {{.Name}} == null ? null : {{.Name}}toJson();
+		map['{{.JSONName}}'] = {{.Name}} == null ? null : {{.Name}}.toJson();
 		{{- else}}
     	map['{{.JSONName}}'] = {{.Name}};
     	{{- end}}
