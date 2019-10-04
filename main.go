@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/happy-co/protoc-gen-twirp_dart/generator"
+	"github.com/apptreesoftware/protoc-gen-twirp_dart/generator"
 	"github.com/gogo/protobuf/protoc-gen-gogo/plugin"
 	"io"
 	"io/ioutil"
