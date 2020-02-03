@@ -66,7 +66,9 @@ class {{.Name}} {
 						{{.Name}}Map[key] = val.toInt();
 					{{end}}
 				} else if (val is bool) {
-					{{.Name}}Map[key] = val;
+					{{if eq .MapValueField.Type "bool"}}
+						{{.Name}}Map[key] = val;
+					{{end}}
 				}
 				{{end}}
 			});
