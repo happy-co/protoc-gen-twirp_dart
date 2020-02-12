@@ -173,7 +173,7 @@ class Default{{.Name}} implements {{.Name}} {
 }
 
 {{range .Methods}}
-	{{.OutputType}} {{.Name}}Decode(Uint8List body) async {
+	{{.OutputType}} {{.Name}}Decode(Uint8List body) {
 		var value = json.decode(utf8.decode(body));
 		return {{.OutputType}}.fromJson(value);
 	}
