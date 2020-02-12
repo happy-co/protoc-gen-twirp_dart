@@ -158,8 +158,7 @@ class Default{{.Name}} implements {{.Name}} {
 		if (response.statusCode != 200) {
      		throw twirpException(response);
     	}
-    	var value = json.decode(utf8.decode(response.bodyBytes));
-    	return {{.OutputType}}.fromJson(value);
+		return compute({{.Name}}Decode, response.bodyBytes);
 	}
     {{end}}
 
@@ -172,6 +171,13 @@ class Default{{.Name}} implements {{.Name}} {
     	}
   	}
 }
+
+{{range .Methods}}
+	{{.OutputType}} {{.Name}}Decode(Uint8List body) async {
+		var value = json.decode(utf8.decode(body));
+		return {{.OutputType}}.fromJson(value);
+	}
+{{end}}
 
 {{end}}
 
