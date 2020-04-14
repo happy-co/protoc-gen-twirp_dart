@@ -128,6 +128,7 @@ class {{.Name}} {
 {{end -}}
 
 {{range .Services}}
+{{$serviceName := .Name}}
 abstract class {{.Name}} {
 	{{- range .Methods}}
 	Future<{{.OutputType}}>{{.Name}}({{.InputType}} {{.InputArg}});
@@ -168,7 +169,7 @@ class Default{{.Name}} implements {{.Name}} {
 		if (response.statusCode != 200) {
 	 		throw twirpException(response);
 		}
-		return _queue(() => compute({{.Name}}Decode, response.bodyBytes));
+		return _queue(() => compute({{.Name}}{{$serviceName}}Decode, response.bodyBytes));
 	}
 	{{end}}
 
@@ -180,17 +181,15 @@ class Default{{.Name}} implements {{.Name}} {
 			return new TwirpException(response.body);
 		}
 	}
-
-	{{range .Methods}}
-	{{.OutputType}} {{.Name}}Decode(Uint8List body) {
-		var value = json.decode(utf8.decode(body));
-		return {{.OutputType}}.fromJson(value);
-	}
-	{{end}}
 }
 
+{{range .Methods}}
+{{.OutputType}} {{.Name}}{{$serviceName}}Decode(Uint8List body) {
+	var value = json.decode(utf8.decode(body));
+	return {{.OutputType}}.fromJson(value);
+}
 {{end}}
-
+{{end}}
 `
 
 type Model struct {
