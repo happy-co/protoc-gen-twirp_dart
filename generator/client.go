@@ -39,7 +39,7 @@ class {{.Name}} {
 	{{range .Fields -}}
 	{{.Type}} {{.Name}};
 	{{end}}
-	
+
 	factory {{.Name}}.fromJson(Map<String,dynamic> json) {
 		if (json == null) {
 			return null;
@@ -92,13 +92,13 @@ class {{.Name}} {
 		{{.Type}}.tryParse(json['{{.JSONName}}']),
 		{{else if .IsMessage}}
 		new {{.Type}}.fromJson(json['{{.JSONName}}']),
-		{{else if (eq .Type "double")}}
+		{{else if eq .Type "double"}}
 		json['{{.JSONName}}'].toDouble(),
 		{{else}}
-		json['{{.JSONName}}'] as {{.Type}}, 
+		json['{{.JSONName}}'] as {{.Type}},
 		{{- end}}
 		{{- end}}
-		);	
+		);
 	}
 
 	Map<String,dynamic>toJson() {
