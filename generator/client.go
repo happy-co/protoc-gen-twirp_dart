@@ -94,6 +94,8 @@ class {{.Name}} {
 		new {{.Type}}.fromJson(json['{{.JSONName}}']),
 		{{else if eq .Type "double"}}
 		json['{{.JSONName}}'].toDouble(),
+		{{else}}
+		json['{{.JSONName}}'] as {{.Type}},
 		{{- end}}
 		{{- end}}
 		);
