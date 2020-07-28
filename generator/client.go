@@ -92,6 +92,8 @@ class {{.Name}} {
 		{{.Type}}.tryParse(json['{{.JSONName}}']),
 		{{else if .IsMessage}}
 		new {{.Type}}.fromJson(json['{{.JSONName}}']),
+		{{else if (eq .Type "double")}}
+		json['{{.JSONName}}'].toDouble(),
 		{{else}}
 		json['{{.JSONName}}'] as {{.Type}}, 
 		{{- end}}
