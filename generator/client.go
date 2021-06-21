@@ -134,7 +134,11 @@ abstract class {{.Name}} {
     {{- end}}
 }
 
-Future<T> _noqueue<T>(FutureOr<T> Function() callback) {
+Future<T> _noIsolateQueue<T>(FutureOr<T> Function() callback) {
+	return callback();
+}
+
+Future<T> _noApiQueue<T>(FutureOr<T> Function() callback) {
 	return callback();
 }
 
@@ -142,18 +146,24 @@ class Default{{.Name}} implements {{.Name}} {
 	final String hostname;
     Requester _requester;
 	final _pathPrefix = "/twirp/{{.Package}}.{{.Name}}/";
-	Future<T> Function<T>(FutureOr<T> Function() callback) _queue;
+	Future<T> Function<T>(FutureOr<T> Function() callback) _isolateQueue;
+	Future<T> Function<T>(FutureOr<T> Function() callback) _apiQueue;
 
-    Default{{.Name}}(this.hostname, {Requester requester, queue}) {
+    Default{{.Name}}(this.hostname, {Requester requester, isolateQueue, apiQueue}) {
 		if (requester == null) {
       		_requester = new Requester(new Client());
     	} else {
 			_requester = requester;
 		}
-		if (queue == null) {
-			_queue = _noqueue;
+		if (isolateQueue == null) {
+			_isolateQueue = _noIsolateQueue;
 		} else {
-			_queue = queue;
+			_isolateQueue = isolateQueue;
+		}
+		if (apiQueue == null) {
+			_apiQueue = _noApiQueue;
+		} else {
+			_apiQueue = apiQueue;
 		}
 	}
 
@@ -164,11 +174,11 @@ class Default{{.Name}} implements {{.Name}} {
     	var request = new Request('POST', uri);
 		request.headers['Content-Type'] = 'application/json';
     	request.body = json.encode({{.InputArg}}.toJson());
-    	var response = await _requester.send(request);
+    	var response = await _apiQueue(() =>_requester.send(request));
 		if (response.statusCode != 200) {
      		throw twirpException(response);
     	}
-		return _queue(() => compute({{.Name}}Decode, response.bodyBytes));
+		return _isolateQueue(() => compute({{.Name}}Decode, response.bodyBytes));
 	}
     {{end}}
 
