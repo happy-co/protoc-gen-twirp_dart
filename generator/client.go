@@ -143,17 +143,6 @@ class Default{{.Name}} implements {{.Name}} {
 	final _pathPrefix = "/twirp/{{.Package}}.{{.Name}}/";
 	Future<T> Function<T>(FutureOr<T> Function() callback) _isolateQueue;
 	Future<T> Function<T>(FutureOr<T> Function() callback) _apiQueue;
-<<<<<<< HEAD
-=======
-
-	Future<T> _noIsolateQueue<T>(FutureOr<T> Function() callback) {
-		return callback();
-	}
-	
-	Future<T> _noApiQueue<T>(FutureOr<T> Function() callback) {
-		return callback();
-	}
->>>>>>> 3621a7c2cfe2c8135c944e0542c459aabe68bac7
 	
     Default{{.Name}}(this.hostname, {Requester requester, isolateQueue, apiQueue}) {
 		if (requester == null) {
@@ -180,7 +169,7 @@ class Default{{.Name}} implements {{.Name}} {
 	Future<T> _noApiQueue<T>(FutureOr<T> Function() callback) {
 		return callback();
 	}
-	
+
 	{{range .Methods}}
 	Future<{{.OutputType}}>{{.Name}}({{.InputType}} {{.InputArg}}) async {
 		var url = "${hostname}${_pathPrefix}{{.Path}}";
