@@ -176,12 +176,12 @@ class Default{{.Name}} implements {{.Name}} {
 		var uri = Uri.parse(url);
 		var request = new Request('POST', uri);
 		request.headers['Content-Type'] = 'application/json';
-    	request.body = json.encode({{.InputArg}}.toJson());
-    	var response = await _apiQueue(() =>_requester.send(request));
+		request.body = json.encode({{.InputArg}}.toJson());
+		var response = await _apiQueue(() =>_requester.send(request));
 		if (response.statusCode != 200) {
-     		throw twirpException(response);
-    	}
-		return _isolateQueue(() => compute({{.Name}}Decode, response.bodyBytes));
+			throw twirpException(response);
+		}
+		return _isolateQueue(() => compute({{$serviceName}}Decode, response.bodyBytes));
 	}
 	{{end}}
 
