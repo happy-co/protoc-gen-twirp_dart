@@ -174,12 +174,11 @@ class Default{{.Name}} implements {{.Name}} {
     	var request = new Request('POST', uri);
 		request.headers['Content-Type'] = 'application/json';
     	request.body = json.encode({{.InputArg}}.toJson());
-    	return _apiQueue(() =>_requester.send(request)).then((response) {
-			if (response.statusCode != 200) {
-				throw twirpException(response);
-		   }
-		   return _isolateQueue(() => compute({{.Name}}Decode, response.bodyBytes));
-		});
+    	var response = await _apiQueue(() =>_requester.send(request));
+		if (response.statusCode != 200) {
+     		throw twirpException(response);
+    	}
+		return _isolateQueue(() => compute({{.Name}}Decode, response.bodyBytes));
 	}
     {{end}}
 
