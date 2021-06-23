@@ -134,14 +134,6 @@ abstract class {{.Name}} {
     {{- end}}
 }
 
-Future<T> _noIsolateQueue<T>(FutureOr<T> Function() callback) {
-	return callback();
-}
-
-Future<T> _noApiQueue<T>(FutureOr<T> Function() callback) {
-	return callback();
-}
-
 class Default{{.Name}} implements {{.Name}} {
 	final String hostname;
     Requester _requester;
@@ -149,6 +141,14 @@ class Default{{.Name}} implements {{.Name}} {
 	Future<T> Function<T>(FutureOr<T> Function() callback) _isolateQueue;
 	Future<T> Function<T>(FutureOr<T> Function() callback) _apiQueue;
 
+	Future<T> _noIsolateQueue<T>(FutureOr<T> Function() callback) {
+		return callback();
+	}
+	
+	Future<T> _noApiQueue<T>(FutureOr<T> Function() callback) {
+		return callback();
+	}
+	
     Default{{.Name}}(this.hostname, {Requester requester, isolateQueue, apiQueue}) {
 		if (requester == null) {
       		_requester = new Requester(new Client());
