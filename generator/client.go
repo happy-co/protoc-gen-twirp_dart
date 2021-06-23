@@ -181,7 +181,7 @@ class Default{{.Name}} implements {{.Name}} {
 		if (response.statusCode != 200) {
 			throw twirpException(response);
 		}
-		return _isolateQueue(() => compute({{$serviceName}}Decode, response.bodyBytes));
+		return _isolateQueue(() => compute({{.Name}}{{$serviceName}}Decode, response.bodyBytes));
 	}
 	{{end}}
 
